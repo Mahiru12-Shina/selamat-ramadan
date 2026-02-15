@@ -489,6 +489,12 @@
   <body
     class="gradient-bg min-h-screen flex items-center justify-center relative"
   >
+    <!-- Background Music - Autoplay -->
+    <audio id="bgMusic" loop>
+      <source src="video_20260216_002529_edit.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+
     <!-- Loading Screen dengan tema Ramadan -->
     <div id="loading-screen">
       <div class="moon-loader">
@@ -638,18 +644,39 @@
       const mainContent = document.getElementById("main-content");
       const finalMessage = document.getElementById("final-message");
       const loadingScreen = document.getElementById("loading-screen");
+      const bgMusic = document.getElementById("bgMusic");
+
+      // Autoplay music immediately when page loads (during loading screen)
+      function playMusic() {
+        bgMusic.volume = 0.3; // Set volume to 30%
+        bgMusic.play().catch((error) => {
+          console.log("Autoplay prevented, will play on first interaction");
+          // Fallback: play on any user interaction
+          document.addEventListener(
+            "click",
+            function playOnClick() {
+              bgMusic.play();
+              document.removeEventListener("click", playOnClick);
+            },
+            { once: true },
+          );
+        });
+      }
+
+      // Start music immediately when page loads
+      window.addEventListener("DOMContentLoaded", playMusic);
 
       // Funny responses when clicking "No" dengan tema Ramadan
       const noResponses = [
         "Gak mau? Yakin? 🥺🌙",
         "Masa iya gak mau maafin menjelang Ramadan? 😢",
         "Ayolah sayang... bulan suci sudah dekat 🙏💕",
-        "Aku udah bikin website bertema Ramadan loh... 😭🕌",
+        "eja udah bikin website bertema Ramadan loh... 😭🕌",
         "Please... di bulan penuh berkah ini 🥺👉👈",
-        "Aku janji gak ulangi lagi deh! Insya Allah 💝🤲",
+        "eja janji gak ulangi lagi deh! Insya Allah 💝🤲",
         "Yang sayang, jangan gitu dong... Ramadan bentar lagi 😢🌙",
-        "Oke deh, aku berdoa semoga kamu maafin aku... 😭💔🤲",
-        "Allah Maha Pengampun, kamu juga dong 🥺✨",
+        "Oke deh, eja berdoa semoga ayi maafin eja... 😭💔🤲",
+        "Allah Maha Pengampun, ayi juga dong 🥺✨",
       ];
 
       // Loading screen dengan durasi lebih lama untuk efek dramatis
