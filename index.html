@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maaf Ya Sayang... 🥺</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Amiri:wght@400;700&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* Animasi Loading Screen dengan tema Ramadan */
+      #loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          #1a1a3e 0%,
+          #0f0f29 50%,
+          #1a1a3e 100%
+        );
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease;
+      }
+
+      #loading-screen.fade-out {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* Animasi Bulan dan Bintang */
+      .moon-loader {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        animation: moonGlow 2s ease-in-out infinite;
+      }
+
+      .moon {
+        width: 100px;
+        height: 100px;
+        background: #ffd700;
+        border-radius: 50%;
+        position: relative;
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+      }
+
+      .moon::before {
+        content: "☪️";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 50px;
+        animation: rotate 4s linear infinite;
+      }
+
+      @keyframes moonGlow {
+        0%,
+        100% {
+          transform: scale(1);
+          filter: brightness(1);
+        }
+        50% {
+          transform: scale(1.1);
+          filter: brightness(1.3);
+        }
+      }
+
+      @keyframes rotate {
+        from {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      .loading-text {
+        color: #ffd700;
+        margin-top: 40px;
+        font-size: clamp(1rem, 3vw, 1.2rem);
+        animation: pulse 1.5s ease-in-out infinite;
+        text-align: center;
+        padding: 0 20px;
+      }
+
+      .bismillah-text {
+        color: #ffd700;
+        font-family: "Amiri", serif;
+        font-size: clamp(1.2rem, 4vw, 1.8rem);
+        margin-top: 20px;
+        text-align: center;
+        padding: 0 20px;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      /* Background Ramadan Night Sky */
+      .gradient-bg {
+        background: linear-gradient(
+          to bottom,
+          #0f0c29 0%,
+          #302b63 50%,
+          #24243e 100%
+        );
+        position: relative;
+      }
+
+      .gradient-bg::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background:
+          radial-gradient(
+            circle at 20% 80%,
+            rgba(255, 215, 0, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(138, 43, 226, 0.1) 0%,
+            transparent 50%
+          );
+        animation: shimmer 10s ease-in-out infinite;
+      }
+
+      @keyframes shimmer {
+        0%,
+        100% {
+          opacity: 0.5;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      /* Floating Elements - Bulan, Bintang, Lentera */
+      .floating-element {
+        position: fixed;
+        animation: float-up 6s ease-in infinite;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      @keyframes float-up {
+        0% {
+          opacity: 0;
+          transform: translateY(0) rotate(0deg);
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-100vh) rotate(360deg);
+        }
+      }
+
+      /* Lantern Animation */
+      .lantern {
+        position: fixed;
+        font-size: clamp(25px, 5vw, 40px);
+        animation: swing 3s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      @keyframes swing {
+        0%,
+        100% {
+          transform: rotate(-10deg);
+        }
+        50% {
+          transform: rotate(10deg);
+        }
+      }
+
+      /* Main Content Animations */
+      .fade-in {
+        animation: fadeIn 1.5s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .bounce-in {
+        animation: bounceIn 1s ease-out;
+      }
+
+      @keyframes bounceIn {
+        0% {
+          transform: scale(0);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* Cute Button dengan tema Ramadan */
+      .cute-button {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .cute-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(255, 215, 0, 0.5);
+      }
+
+      .cute-button::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.6s,
+          height 0.6s;
+      }
+
+      .cute-button:active::before {
+        width: 300px;
+        height: 300px;
+      }
+
+      /* Emoji Animation */
+      .emoji-bounce {
+        display: inline-block;
+        animation: emojiFloat 2s ease-in-out infinite;
+        font-size: clamp(2rem, 8vw, 3.5rem);
+      }
+
+      @keyframes emojiFloat {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      /* Shake Animation for No Button */
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-10px);
+        }
+        75% {
+          transform: translateX(10px);
+        }
+      }
+
+      .shake {
+        animation: shake 0.5s;
+      }
+
+      /* Message Box dengan tema Ramadan */
+      .message-box {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.95) 0%,
+          rgba(255, 250, 240, 0.95) 100%
+        );
+        border-radius: 30px;
+        padding: clamp(20px, 5vw, 40px);
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        max-width: 600px;
+        width: 90%;
+        margin: 20px auto;
+        border: 3px solid rgba(255, 215, 0, 0.3);
+        position: relative;
+      }
+
+      .message-box::before {
+        content: "☪️";
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: clamp(30px, 6vw, 40px);
+        background: linear-gradient(135deg, #1a1a3e 0%, #302b63 100%);
+        padding: 10px 20px;
+        border-radius: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Responsive Typography */
+      .main-title {
+        font-size: clamp(2rem, 8vw, 4rem);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .sub-text {
+        font-size: clamp(1rem, 3vw, 1.25rem);
+      }
+
+      .quote-text {
+        font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      }
+
+      /* Stars Background */
+      .stars {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .star {
+        position: absolute;
+        background: #ffd700;
+        border-radius: 50%;
+        animation: twinkle 2s infinite;
+        box-shadow: 0 0 10px #ffd700;
+      }
+
+      @keyframes twinkle {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.3);
+        }
+      }
+
+      /* Mosque Silhouette */
+      .mosque-silhouette {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 200px;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 200"><path d="M0,200 L0,150 Q50,120 100,150 L100,200 M150,200 L150,100 Q200,70 250,100 L250,200 M300,200 L300,80 L350,50 L400,80 L400,200 M450,200 L450,120 Q500,90 550,120 L550,200 M600,200 L600,60 L650,30 L700,60 L700,200 M750,200 L750,100 Q800,70 850,100 L850,200 M900,200 L900,140 Q950,110 1000,140 L1000,200 M1050,200 L1050,120 Q1100,90 1150,120 L1150,200 L1200,200" fill="%231a1a3e" opacity="0.8"/></svg>')
+          no-repeat bottom center;
+        background-size: cover;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      /* Hidden Final Message */
+      #final-message {
+        display: none;
+      }
+
+      #final-message.show {
+        display: flex;
+        animation: fadeIn 1.5s ease-in;
+      }
+
+      /* Confetti dengan warna Ramadan */
+      .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        top: -10px;
+        animation: confetti-fall 3s linear;
+        pointer-events: none;
+        z-index: 100;
+      }
+
+      @keyframes confetti-fall {
+        to {
+          transform: translateY(100vh) rotate(360deg);
+        }
+      }
+
+      /* Ornamental decorations */
+      .ornament {
+        position: absolute;
+        font-size: clamp(20px, 4vw, 30px);
+        opacity: 0.3;
+        animation: rotate 20s linear infinite;
+      }
+
+      .ornament.top-left {
+        top: 10px;
+        left: 10px;
+      }
+
+      .ornament.top-right {
+        top: 10px;
+        right: 10px;
+        animation-direction: reverse;
+      }
+
+      .ornament.bottom-left {
+        bottom: 10px;
+        left: 10px;
+      }
+
+      .ornament.bottom-right {
+        bottom: 10px;
+        right: 10px;
+        animation-direction: reverse;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 640px) {
+        .message-box {
+          padding: 20px;
+          width: 95%;
+        }
+
+        .button-container {
+          flex-direction: column;
+          gap: 15px !important;
+        }
+
+        .cute-button {
+          width: 100%;
+          padding: 15px 20px !important;
+        }
+
+        .mosque-silhouette {
+          height: 100px;
+        }
+      }
+
+      @media (min-width: 641px) and (max-width: 1024px) {
+        .message-box {
+          width: 85%;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="gradient-bg min-h-screen flex items-center justify-center relative"
+  >
+    <!-- Loading Screen dengan tema Ramadan -->
+    <div id="loading-screen">
+      <div class="moon-loader">
+        <div class="moon"></div>
+      </div>
+      <div class="loading-text">Memuat pesan spesial di bulan suci...</div>
+      <div class="bismillah-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</div>
+    </div>
+
+    <!-- Stars Background -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Mosque Silhouette -->
+    <div class="mosque-silhouette"></div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="relative z-10 hidden">
+      <div class="message-box fade-in text-center">
+        <!-- Ornamental decorations -->
+        <div class="ornament top-left">✨</div>
+        <div class="ornament top-right">🌙</div>
+        <div class="ornament bottom-left">⭐</div>
+        <div class="ornament bottom-right">✨</div>
+
+        <div class="mb-6" style="margin-top: 20px">
+          <span class="emoji-bounce">🥺</span>
+          <span class="emoji-bounce" style="animation-delay: 0.2s">🤲</span>
+          <span class="emoji-bounce" style="animation-delay: 0.4s">🌙</span>
+        </div>
+
+        <h1 class="main-title font-bold mb-4">Maaf Yaaa ayiii</h1>
+
+        <p class="sub-text text-gray-700 mb-6 leading-relaxed px-4">
+          Menjelang Ramadan yang penuh berkah ini, eja mau minta maaf kalau eja
+          ada salah sama ayi,kadang ejaa adaa buatt ayi marah apaunn ituu ejaa
+          mintaa maaf yaah. 🤲💝
+        </p>
+
+        <div
+          class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 mb-6 mx-4 border-2 border-purple-100"
+        >
+          <div class="text-3xl mb-3">🕌</div>
+          <p class="quote-text text-gray-700 italic leading-relaxed">
+            "Kalau ada kata-kata atau perbuatan eja yang menyakiti hati ayi, eja
+            minta maaf yaah. ayi maaf yaah eja belum bisa jadi yang terbaik buat
+            ayi, tapi eja janji akan terus belajar dan berusaha jadi lebih baik
+            lagi. Semoga di bulan Ramadan ini, kita bisa sama-sama memperbaiki
+            diri dan mendekatkan diri kepada Allah. Aamiin." 🤲🌙
+          </p>
+        </div>
+
+        <div class="text-5xl mb-6">
+          <span class="emoji-bounce" style="animation-delay: 0.1s">❤️</span>
+          <span class="emoji-bounce" style="animation-delay: 0.3s">🌙</span>
+          <span class="emoji-bounce" style="animation-delay: 0.5s">✨</span>
+        </div>
+
+        <p class="sub-text font-semibold text-gray-800 mb-8 px-4">
+          Ayi mau maafin ejaa kann? 🥺👉👈
+        </p>
+
+        <div class="button-container flex gap-4 justify-center flex-wrap px-4">
+          <button
+            id="yes-btn"
+            class="cute-button bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg"
+          >
+            Iya, ayii maafin kok! 💕
+          </button>
+          <button
+            id="no-btn"
+            class="cute-button bg-gray-400 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg"
+          >
+            Gak mau 😤
+          </button>
+        </div>
+
+        <div class="mt-6 text-sm text-gray-500 italic">
+          "Bulan Ramadan adalah bulan pengampunan" 🌙
+        </div>
+      </div>
+    </div>
+
+    <!-- Final Message (Hidden) -->
+    <div
+      id="final-message"
+      class="relative z-10 flex-col items-center justify-center"
+    >
+      <div class="message-box text-center">
+        <!-- Ornamental decorations -->
+        <div class="ornament top-left">🎉</div>
+        <div class="ornament top-right">💖</div>
+        <div class="ornament bottom-left">🌟</div>
+        <div class="ornament bottom-right">🎊</div>
+
+        <div style="margin-top: 20px" class="mb-6">
+          <div class="text-7xl mb-4">🎉💖🎊</div>
+          <div class="text-5xl">🕌🌙✨</div>
+        </div>
+
+        <h1 class="main-title font-bold mb-4">Alhamdulillah! 🥰</h1>
+
+        <p class="sub-text text-gray-700 mb-6 px-4">
+          Terima kasih udah mau maafin eja yaaa ❤️<br />
+        </p>
+
+        <div
+          class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-6 mb-6 mx-4 border-2 border-yellow-200"
+        >
+          <div class="text-4xl mb-3">🌟</div>
+          <p class="quote-text text-gray-700 leading-relaxed">
+            kitaa harus sama-sama memperbaiki diri dan saling memaafkan di bulan
+            Ramadan ini semoga ramadan tahun kitaa banyak dapat kebahagian
+            aammin. maaf yaah ejaa gak bisa sering chat dluan,eja gakk mau ayii
+            nangiss lagii karna dimarahin abang.ejaa bakal sabar nunggu ayi beli
+            hp 2 ejaa janji bakal sabar nunggu nyaa.nanti pas ayi udah baca inii
+            ayi ingat pesan ejaa yaah semangat puasanya,tarawih jangan tinggal
+            yaah. kalau ejaa lambat kirim ini maaf yaah mungkin pas ayi baca ini
+            web ni dah eja buat 1 atau 2 hari sebelum ja kirim.segituu ajaa
+            mungkin pesan ejaa.asslamualaikum imuttt 😘💕
+          </p>
+        </div>
+
+        <div class="text-6xl mb-4">😘💕🌟</div>
+
+        <p
+          class="text-3xl font-bold mb-4"
+          style="
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          "
+        >
+          I Love You! 💗
+        </p>
+
+        <div class="mt-6 text-sm text-gray-500 italic">
+          "Semoga kita selalu dalam lindungan-Nya" 🤲🌙
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Variables
+      let noClickCount = 0;
+      const noBtn = document.getElementById("no-btn");
+      const yesBtn = document.getElementById("yes-btn");
+      const mainContent = document.getElementById("main-content");
+      const finalMessage = document.getElementById("final-message");
+      const loadingScreen = document.getElementById("loading-screen");
+
+      // Funny responses when clicking "No" dengan tema Ramadan
+      const noResponses = [
+        "Gak mau? Yakin? 🥺🌙",
+        "Masa iya gak mau maafin menjelang Ramadan? 😢",
+        "Ayolah sayang... bulan suci sudah dekat 🙏💕",
+        "Aku udah bikin website bertema Ramadan loh... 😭🕌",
+        "Please... di bulan penuh berkah ini 🥺👉👈",
+        "Aku janji gak ulangi lagi deh! Insya Allah 💝🤲",
+        "Yang sayang, jangan gitu dong... Ramadan bentar lagi 😢🌙",
+        "Oke deh, aku berdoa semoga kamu maafin aku... 😭💔🤲",
+        "Allah Maha Pengampun, kamu juga dong 🥺✨",
+      ];
+
+      // Loading screen dengan durasi lebih lama untuk efek dramatis
+      setTimeout(() => {
+        loadingScreen.classList.add("fade-out");
+        setTimeout(() => {
+          loadingScreen.style.display = "none";
+          mainContent.classList.remove("hidden");
+          createFloatingElements();
+          createStars();
+          createLanterns();
+        }, 500);
+      }, 3000);
+
+      // Create floating elements (bulan, bintang, dll)
+      function createFloatingElements() {
+        const elements = ["🌙", "⭐", "✨", "💫", "🕌", "📿", "🤲"];
+        setInterval(() => {
+          const element = document.createElement("div");
+          element.className = "floating-element";
+          element.textContent =
+            elements[Math.floor(Math.random() * elements.length)];
+          element.style.left = Math.random() * 100 + "%";
+          element.style.fontSize = Math.random() * 20 + 25 + "px";
+          element.style.animationDuration = Math.random() * 4 + 4 + "s";
+          element.style.animationDelay = Math.random() * 2 + "s";
+          document.body.appendChild(element);
+
+          setTimeout(() => element.remove(), 8000);
+        }, 800);
+      }
+
+      // Create stars dengan efek lebih dramatis
+      function createStars() {
+        const starsContainer = document.getElementById("stars");
+        const starCount = window.innerWidth < 768 ? 30 : 80; // Lebih sedikit di mobile
+
+        for (let i = 0; i < starCount; i++) {
+          const star = document.createElement("div");
+          star.className = "star";
+          const size = Math.random() * 3 + 1;
+          star.style.width = size + "px";
+          star.style.height = size + "px";
+          star.style.left = Math.random() * 100 + "%";
+          star.style.top = Math.random() * 100 + "%";
+          star.style.animationDelay = Math.random() * 3 + "s";
+          star.style.animationDuration = Math.random() * 2 + 1 + "s";
+          starsContainer.appendChild(star);
+        }
+      }
+
+      // Create hanging lanterns
+      function createLanterns() {
+        const lanternCount = window.innerWidth < 768 ? 2 : 4; // Lebih sedikit di mobile
+        for (let i = 0; i < lanternCount; i++) {
+          const lantern = document.createElement("div");
+          lantern.className = "lantern";
+          lantern.textContent = "🏮";
+          lantern.style.left = 20 + i * (60 / lanternCount) + "%";
+          lantern.style.top = "5%";
+          lantern.style.animationDelay = i * 0.5 + "s";
+          document.body.appendChild(lantern);
+        }
+      }
+
+      // No button behavior dengan responsive handling
+      noBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        noClickCount++;
+        noBtn.classList.add("shake");
+
+        setTimeout(() => noBtn.classList.remove("shake"), 500);
+
+        if (noClickCount < noResponses.length) {
+          noBtn.textContent = noResponses[noClickCount];
+        } else {
+          noBtn.textContent = "Pokoknya harus maafin! 🥺🤲";
+        }
+
+        // Make Yes button bigger (with limit for mobile)
+        const maxScale = window.innerWidth < 768 ? 1.5 : 2;
+        const currentSize = Math.min(1 + noClickCount * 0.15, maxScale);
+        yesBtn.style.transform = `scale(${currentSize})`;
+        yesBtn.style.transition = "transform 0.3s ease";
+
+        // Move No button to random position after a few clicks
+        if (noClickCount > 2) {
+          const isMobile = window.innerWidth < 768;
+          const buttonWidth = noBtn.offsetWidth;
+          const buttonHeight = noBtn.offsetHeight;
+
+          // Calculate safe boundaries
+          const maxX = Math.max(
+            window.innerWidth - buttonWidth - 20,
+            buttonWidth,
+          );
+          const maxY = Math.max(
+            window.innerHeight - buttonHeight - 100,
+            buttonHeight,
+          );
+
+          // Generate random position within safe boundaries
+          const randomX = Math.max(
+            10,
+            Math.min(Math.random() * maxX, maxX - 10),
+          );
+          const randomY = Math.max(
+            10,
+            Math.min(Math.random() * maxY, maxY - 10),
+          );
+
+          noBtn.style.position = "fixed";
+          noBtn.style.left = randomX + "px";
+          noBtn.style.top = randomY + "px";
+          noBtn.style.transition = "all 0.3s ease";
+
+          // On mobile, make it even harder to click
+          if (isMobile && noClickCount > 4) {
+            noBtn.style.transform = "scale(0.8)";
+          }
+        }
+      });
+
+      // Yes button behavior dengan confetti tema Ramadan
+      yesBtn.addEventListener("click", () => {
+        // Play celebration with Ramadan themed confetti
+        const ramadanColors = [
+          "#FFD700",
+          "#8A2BE2",
+          "#FF69B4",
+          "#00CED1",
+          "#FF6347",
+          "#32CD32",
+        ];
+        const confettiShapes = ["⭐", "🌙", "✨", "💖", "🎊", "🎉"];
+
+        for (let i = 0; i < 150; i++) {
+          setTimeout(() => {
+            const confetti = document.createElement("div");
+            confetti.className = "confetti";
+            confetti.style.left = Math.random() * 100 + "%";
+
+            // Mix shapes and colors
+            if (Math.random() > 0.5) {
+              confetti.textContent =
+                confettiShapes[
+                  Math.floor(Math.random() * confettiShapes.length)
+                ];
+              confetti.style.fontSize = Math.random() * 20 + 15 + "px";
+            } else {
+              confetti.style.backgroundColor =
+                ramadanColors[Math.floor(Math.random() * ramadanColors.length)];
+            }
+
+            confetti.style.animationDelay = Math.random() * 0.5 + "s";
+            confetti.style.animationDuration = Math.random() * 2 + 2 + "s";
+            document.body.appendChild(confetti);
+
+            setTimeout(() => confetti.remove(), 4000);
+          }, i * 15);
+        }
+
+        // Show final message with fade effect
+        setTimeout(() => {
+          mainContent.style.opacity = "0";
+          mainContent.style.transition = "opacity 0.5s ease";
+        }, 500);
+
+        setTimeout(() => {
+          mainContent.style.display = "none";
+          finalMessage.classList.add("show");
+        }, 1000);
+      });
+
+      // Prevent accidental text selection on buttons
+      [yesBtn, noBtn].forEach((btn) => {
+        btn.addEventListener("selectstart", (e) => e.preventDefault());
+        btn.addEventListener("mousedown", (e) => e.preventDefault());
+      });
+
+      // Handle window resize
+      let resizeTimer;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          // Reset No button position if needed
+          if (noClickCount > 2 && noBtn.style.position === "fixed") {
+            const buttonWidth = noBtn.offsetWidth;
+            const buttonHeight = noBtn.offsetHeight;
+            const currentLeft = parseInt(noBtn.style.left);
+            const currentTop = parseInt(noBtn.style.top);
+
+            // Check if button is out of bounds
+            if (
+              currentLeft + buttonWidth > window.innerWidth ||
+              currentTop + buttonHeight > window.innerHeight
+            ) {
+              noBtn.style.left = "50%";
+              noBtn.style.top = "50%";
+              noBtn.style.transform = "translate(-50%, -50%)";
+            }
+          }
+        }, 250);
+      });
+
+      // Add touch event handling for better mobile experience
+      if ("ontouchstart" in window) {
+        noBtn.addEventListener("touchstart", (e) => {
+          if (noClickCount > 2) {
+            e.preventDefault();
+            // Make it even more playful on touch devices
+            const touch = e.touches[0];
+            const buttonRect = noBtn.getBoundingClientRect();
+            const distance = 100; // pixels to move away
+
+            const dx = touch.clientX - (buttonRect.left + buttonRect.width / 2);
+            const dy = touch.clientY - (buttonRect.top + buttonRect.height / 2);
+            const angle = Math.atan2(dy, dx);
+
+            const newX = Math.max(
+              10,
+              Math.min(
+                buttonRect.left - Math.cos(angle) * distance,
+                window.innerWidth - buttonRect.width - 10,
+              ),
+            );
+            const newY = Math.max(
+              10,
+              Math.min(
+                buttonRect.top - Math.sin(angle) * distance,
+                window.innerHeight - buttonRect.height - 10,
+              ),
+            );
+
+            noBtn.style.left = newX + "px";
+            noBtn.style.top = newY + "px";
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
